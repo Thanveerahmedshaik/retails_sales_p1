@@ -227,6 +227,6 @@ This project is part of my portfolio, showcasing the SQL skills essential for da
 
 
 - **LinkedIn**: [Connect with me professionally](https://www.linkedin.com/in/thanveer-ahmed-shaik/)
-- **Mail**: [Connect with me professionally](shaikthanveerahmed123@gmail.com)
+- **Mail**: **shaikthanveerahmed123@gmail.com**
 
 

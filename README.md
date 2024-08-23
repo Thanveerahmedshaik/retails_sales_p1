@@ -120,7 +120,7 @@ GROUP BY 1
 4. **Write a SQL query to  find the average age of customers who purchased items from the 'Beauty category'**:
 ```sql
 SELECT 
-	ROUND(AVG(age),2) as avg_age
+ROUND(AVG(age),2) as avg_age
 FROM retail_sales
 WHERE category = 'Beauty'
 ```
@@ -136,8 +136,8 @@ WHERE total_sale >= '1000'
 6. **Write a SQL query to  find the total number of transactions (transaction_id) made by each gender in each category**:
 ```sql
 SELECT category,
-		gender,
-		COUNT(transactions_id) as total_transactions 
+	gender,
+	COUNT(transactions_id) as total_transactions 
 FROM retail_sales
 GROUP BY 1,2
 ORDER BY 1

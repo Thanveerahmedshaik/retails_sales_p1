@@ -5,38 +5,36 @@ CREATE DATABASE SQL_Project_1;
 --Create the table 
 
 CREATE TABLE retail_sales
-						(
-							transactions_id INT PRIMARY KEY,
-							sale_date DATE,
-							sale_time TIME,
-							customer_id INT,
-							gender VARCHAR(25),
-							age INT,
-							category VARCHAR(25),
-							quantiy INT,
-							price_per_unit FLOAT,
-							cogs FLOAT,
-							total_sale FLOAT
-						)
+	     (
+		transactions_id INT PRIMARY KEY,
+		sale_date DATE,
+		sale_time TIME,
+		customer_id INT,
+		gender VARCHAR(25),
+		age INT,
+		category VARCHAR(25),
+		quantiy INT,
+		price_per_unit FLOAT,
+		cogs FLOAT,
+		total_sale FLOAT
+	     )
+
+--Determine the total number of records in the dataset.
+SELECT COUNT(*) FROM retail_sales;
+
 --Select the first 10 rows and check the data
 
 SELECT * 
 FROM retail_sales
 LIMIT 10
 
+--Find out how many unique customers are in the dataset.
+SELECT COUNT(DISTINCT customer_id) FROM retail_sales;
 
---##DATA CLEANING##--
+--Identify all unique product categories in the dataset.
+SELECT DISTINCT category FROM retail_sales;
 
---CHECK FOR NULL VALUES INDIVIDUALLY
-SELECT * FROM retail_sales 
-WHERE transactions_id IS NULL
-
-
-SELECT * FROM retail_sales 
-WHERE sale_date IS NULL
-
---CHECK FOR NULL VALUES OVERALL
-
+--Check for any null values in the dataset and delete records with missing data.
 SELECT * FROM retail_sales 
 WHERE 
 	sale_date IS NULL
@@ -51,7 +49,6 @@ WHERE
 	OR cogs IS NULL
 	OR total_sale IS NULL
 
--- DELETE ROWS THAT HAS NULL VALUES
 
 DELETE FROM retail_sales
 WHERE 
@@ -68,54 +65,22 @@ WHERE
 	OR total_sale IS NULL
 
 	
+--CHECK FOR NULL VALUES INDIVIDUALLY
+SELECT * FROM retail_sales 
+WHERE transactions_id IS NULL
 
 
-
-
-
-
--- DATA EXPLORATION
-
---How many sale do we have?
-
-SELECT COUNT(*) as total_sale FROM retail_sales 
-
---How many customers do we have
-
-SELECT COUNT(customer_id) as total_customer FROM retail_sales 
-
---How many unique customers do we have
-
-SELECT COUNT(DISTINCT customer_id) as total_customer FROM retail_sales  
-
---How many categories do we have
-SELECT COUNT(DISTINCT category) as total_categories FROM retail_sales  
+SELECT * FROM retail_sales 
+WHERE sale_date IS NULL
 
 
 -- DATA ANALYSIS & BUSINESS KEY PROBLEMS AND ANSWERS
 
---MY ANALYSIS AND FINDINGS
 -- Q.1 Write a SQL query to retrieve all columns for sales made on '2022-11-05'
--- Q.2 Write a SQL query to retrieve all transactions where the category is 'clothing' and the quantity soldis more than 10 in the month of Nov-2022
--- Q.3 Write a SQL query to  calculate the total sales(total_sale) for each category.
--- Q.4 Write a SQL query to  find the average age of customers who purchased items from the 'Beauty category'.
--- Q.5 Write a SQL query to  find all transactions hwere the total_sale is greater than 1000.
--- Q.6 Write a SQL query to  find the total number of transactions (transaction_id) made by each other in each category.
--- Q.7 Write a SQL query to calculate the average sale for each month. Find out the best selling month in each year
--- Q.8 Write a SQL query to find the top 5 customers based on the highest total sales.
--- Q.9 Write a SQL query to find the number of unique customers who purchased items from each category.
--- Q.10 Write a SQL query to create each shift and number of orders(Example morning <=12, Afternoon between 12 and 17, Evening after 17)
-
-
-
--- Q.1 Write a SQL query to retrieve all columns for sales made on '2022-11-05'
-
-
 
 SELECT * FROM retail_sales 
 WHERE 
 sale_date = '2022-11-05'
-
 
 
 -- Q.2 Write a SQL query to retrieve all transactions where the category is 'clothing' and 
@@ -137,8 +102,6 @@ SUM(total_sale) as sales,
 COUNT(*) as total_orders
 FROM retail_sales
 GROUP BY 1
-
-
 
 
 -- Q.4 Write a SQL query to  find the average age of customers who purchased items from the 'Beauty category'.
@@ -170,12 +133,10 @@ ORDER BY 1
 SELECT * FROM 
 (
 SELECT 
-
-		EXTRACT(YEAR FROM sale_date) as year,
-		EXTRACT(MONTH FROM sale_date) as month,
-		AVG(total_sale) as avg_sale,
-		RANK() OVER(PARTITION BY EXTRACT(YEAR FROM sale_date) ORDER BY AVG(total_sale) DESC) as rank
-
+	EXTRACT(YEAR FROM sale_date) as year,
+        EXTRACT(MONTH FROM sale_date) as month,
+	AVG(total_sale) as avg_sale,
+	RANK() OVER(PARTITION BY EXTRACT(YEAR FROM sale_date) ORDER BY AVG(total_sale) DESC) as rank
 FROM retail_sales
 GROUP BY 1,2
 ) as t1 
@@ -186,8 +147,8 @@ WHERE rank <= 3
 -- Q.8 Write a SQL query to find the top 5 customers based on the highest total sales.
 
 SELECT 
-		customer_id,
-		SUM(total_sale) as total_sales
+	customer_id,
+	SUM(total_sale) as total_sales
 FROM retail_sales
 GROUP BY 1
 ORDER BY 2 DESC
@@ -201,9 +162,6 @@ SELECT
 	COUNT(DISTINCT(customer_id)) as count_unique_customers
 FROM retail_sales
 GROUP BY 1
-
-
-
 
 
 

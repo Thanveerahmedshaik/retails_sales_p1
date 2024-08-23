@@ -148,11 +148,10 @@ ORDER BY 1
 SELECT * FROM 
 (
 SELECT 
-		EXTRACT(YEAR FROM sale_date) as year,
-		EXTRACT(MONTH FROM sale_date) as month,
-		AVG(total_sale) as avg_sale,
-		RANK() OVER(PARTITION BY EXTRACT(YEAR FROM sale_date) ORDER BY AVG(total_sale) DESC) as rank
-
+	EXTRACT(YEAR FROM sale_date) as year,
+	EXTRACT(MONTH FROM sale_date) as month,
+	AVG(total_sale) as avg_sale,
+	RANK() OVER(PARTITION BY EXTRACT(YEAR FROM sale_date) ORDER BY AVG(total_sale) DESC) as rank
 FROM retail_sales
 GROUP BY 1,2
 ) as t1 
@@ -162,8 +161,8 @@ WHERE rank <= 3
 8. **Write a SQL query to find the top 5 customers based on the highest total sales**:
 ```sql
 SELECT 
-		customer_id,
-		SUM(total_sale) as total_sales
+	customer_id,
+	SUM(total_sale) as total_sales
 FROM retail_sales
 GROUP BY 1
 ORDER BY 2 DESC
@@ -185,11 +184,11 @@ WITH hourly_sale
 AS
 (
 SELECT *,
-		CASE 
-			WHEN EXTRACT(HOUR FROM sale_time) < 12 THEN 'Morning'
-			WHEN EXTRACT(HOUR FROM sale_time) BETWEEN 12 AND 17 THEN 'Afternoon'
-			ELSE 'Evening'
-		END as shift
+	CASE 
+              WHEN EXTRACT(HOUR FROM sale_time) < 12 THEN 'Morning'
+              WHEN EXTRACT(HOUR FROM sale_time) BETWEEN 12 AND 17 THEN 'Afternoon'
+              ELSE 'Evening'
+         END as shift
 FROM retail_sales
 )
 SELECT shift, 
